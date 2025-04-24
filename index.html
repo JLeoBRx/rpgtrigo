@@ -15,7 +15,40 @@
       color: #fff;
     }
 
-  
+    .modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.modal-content {
+  background: rgba(0, 0, 0, 0.95);
+  border: 2px solid #bfa76f;
+  border-radius: 10px;
+  padding: 30px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  text-align: center;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #f4d03f;
+  cursor: pointer;
+}
+
 
     header {
       background: rgba(0, 0, 0, 0.8);
@@ -179,10 +212,13 @@
     <ul id="alunoList"></ul>
   </section>
 
-  <section id="ficha" class="hidden">
-    <h2>📖 Ficha do Herói</h2>
-    <div id="fichaDetalhes"></div>
-  </section>
+  <div id="fichaModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-btn" onclick="fecharFicha()">×</span>
+      <h2>📖 Ficha do Herói</h2>
+      <div id="fichaDetalhes"></div>
+    </div>
+  </div>
 
   <section style="text-align: center; margin-top: 40px;">
     <h2>📝 Envie sua Ficha de Aventureiro</h2>
@@ -193,23 +229,23 @@
   <script src="public/dadosXP.js"></script>
   <script>
     const dados = dadosXP;
-
+  
     const turmaSelect = document.getElementById("turmaSelect");
     const alunoList = document.getElementById("alunoList");
     const top3List = document.getElementById("top3List");
     const fichaSecao = document.getElementById("ficha");
     const fichaDetalhes = document.getElementById("fichaDetalhes");
-
+  
     function renderizarTurma(turma) {
       const alunos = [...dados[turma]].sort((a, b) => b.pontos - a.pontos);
-
+  
       top3List.innerHTML = "";
       alunos.slice(0, 3).forEach(aluno => {
         const li = document.createElement("li");
         li.textContent = `${aluno.nome} - ${aluno.pontos} XP`;
         top3List.appendChild(li);
       });
-
+  
       alunoList.innerHTML = "";
       alunos.forEach((aluno, index) => {
         const li = document.createElement("li");
@@ -218,11 +254,11 @@
         alunoList.appendChild(li);
       });
     }
-
+  
     function mostrarFicha(aluno) {
       const xpProximoNivel = (aluno.nivel + 1) * 30;
       const percentualXP = Math.min((aluno.pontos / xpProximoNivel) * 100, 100);
-
+  
       fichaDetalhes.innerHTML = `
         <img src="${aluno.avatar}" alt="Avatar de ${aluno.nome}" class="ficha-avatar"/>
         <div class="barra-xp">
@@ -236,14 +272,20 @@
           <p><strong>✨ Experiência:</strong> ${aluno.pontos} XP</p>
         </div>
       `;
-      fichaSecao.classList.remove("hidden");
+      document.getElementById("fichaModal").classList.remove("hidden");
     }
-
+  
+    // 👉 Aqui está o que faltava
+    window.fecharFicha = function() {
+      document.getElementById("fichaModal").classList.add("hidden");
+    };
+  
     turmaSelect.addEventListener("change", () => {
       renderizarTurma(turmaSelect.value);
     });
-
+  
     renderizarTurma("A");
   </script>
+  
 </body>
 </html>

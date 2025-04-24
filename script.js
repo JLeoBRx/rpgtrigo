@@ -37,15 +37,32 @@ const dados = {
   }
   
   function mostrarFicha(aluno) {
+    const xpProximoNivel = (aluno.nivel + 1) * 30;
+    const percentualXP = Math.min((aluno.pontos / xpProximoNivel) * 100, 100);
+  
     fichaDetalhes.innerHTML = `
       <img src="${aluno.avatar}" alt="Avatar de ${aluno.nome}" class="ficha-avatar"/>
-      <p><strong>Nome:</strong> ${aluno.nome}</p>
-      <p><strong>Pontos:</strong> ${aluno.pontos}</p>
-      <p><strong>Nível:</strong> ${aluno.nivel}</p>
-      <p><strong>Curso Desejado:</strong> ${aluno.curso}</p>
+      <div class="barra-xp">
+        <div class="xp-preenchido" style="width:${percentualXP}%"></div>
+      </div>
+      <div class="ficha-info">
+        <p><strong>🧝 Nome:</strong> ${aluno.nome}</p>
+        <p><strong>📚 Escola:</strong> ${aluno.curso}</p>
+        <p><strong>🎓 Classe:</strong> ${aluno.classe}</p>
+        <p><strong>⬆️ Nível:</strong> ${aluno.nivel}</p>
+        <p><strong>✨ Experiência:</strong> ${aluno.pontos} XP</p>
+      </div>
     `;
-    fichaSecao.classList.remove("hidden");
+    document.getElementById("fichaModal").classList.remove("hidden");
+
   }
+  
+  function fecharFicha() {
+    document.getElementById("fichaModal").classList.add("hidden");
+  }
+  
+
+
   
   turmaSelect.addEventListener("change", () => {
     renderizarTurma(turmaSelect.value);
