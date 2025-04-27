@@ -61,7 +61,34 @@ const dados = {
     document.getElementById("fichaModal").classList.add("hidden");
   }
   
-
+  const opcoes = {
+    pets: ["Pet X", "Pet Y", "Pet Z", "Pet W", "Pet Nulo"],
+    grimorios: ["Grimório X", "Grimório Y", "Grimório Z", "Grimório Nulo"],
+    defesas: ["Defesa Mágica", "Defesa Física", "Defesa Nula"],
+    ataques: [
+      "Ataque Tirar 10%",
+      "Ataque Tirar 25%",
+      "Ataque Tirar 50%",
+      "Ataque -5",
+      "Ataque -10",
+      "Ataque -25",
+      "Ataque Fracassado",
+      "Roubar Pet",
+      "Roubar Grimório"
+    ]
+  };
+  
+  function girarRoleta(tipo) {
+    const resultadoElemento = document.getElementById(`resultado-${tipo}`);
+    resultadoElemento.textContent = "🎡 Girando roleta...";
+  
+    setTimeout(() => {
+      const itens = opcoes[tipo];
+      const sorteado = itens[Math.floor(Math.random() * itens.length)];
+      resultadoElemento.textContent = `🎯 Resultado: ${sorteado}!`;
+    }, 2500); // 2.5 segundos de suspense
+  }
+  
 
   
   turmaSelect.addEventListener("change", () => {
