@@ -15,41 +15,6 @@
       color: #fff;
     }
 
-    .modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-}
-
-.modal-content {
-  background: rgba(0, 0, 0, 0.95);
-  border: 2px solid #bfa76f;
-  border-radius: 10px;
-  padding: 30px;
-  width: 90%;
-  max-width: 500px;
-  position: relative;
-  text-align: center;
-}
-
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 28px;
-  font-weight: bold;
-  color: #f4d03f;
-  cursor: pointer;
-}
-
-
     header {
       background: rgba(0, 0, 0, 0.8);
       padding: 20px;
@@ -63,8 +28,32 @@
       color: #f4d03f;
     }
 
-    select {
+    .btns-header {
       margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-header {
+      padding: 10px 18px;
+      background: #f4d03f;
+      color: #000;
+      font-weight: bold;
+      border-radius: 8px;
+      border: 2px solid #bfa76f;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .btn-header:hover {
+      background: #ff9a00;
+      color: #000;
+    }
+
+    select {
+      margin-top: 15px;
       padding: 8px;
       font-size: 1em;
       background: #222;
@@ -153,53 +142,23 @@
       margin: 8px 0;
       font-size: 1.1em;
     }
-
-    .btn-versus {
-      display: inline-block;
-      margin-top: 15px;
-      padding: 10px 20px;
-      background: #f4d03f;
-      color: #000;
-      border-radius: 8px;
-      font-weight: bold;
-      text-decoration: none;
-      border: 2px solid #bfa76f;
-      transition: background 0.3s;
-    }
-
-    .btn-versus:hover {
-      background: #ff9a00;
-      color: #000;
-    }
   </style>
+</head>
+
 <body>
-  <a href="https://trigonometria.cursinhoconteudo.com/" style="
-    display: inline-block;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    left: auto;
-    padding: 10px 18px;
-    background: #f4d03f;
-    color: #000;
-    font-weight: bold;
-    border-radius: 8px;
-    border: 2px solid #bfa76f;
-    text-decoration: none;
-    z-index: 1000;
-    transition: background 0.3s;
-  " onmouseover="this.style.background='#ff9a00'" onmouseout="this.style.background='#f4d03f'">
-    🔙 Voltar ao Portal
-  </a>
 
   <header>
     <h1>📜 Registro dos Heróis da Turma</h1>
+
+    <div class="btns-header">
+      <a href="https://trigonometria.cursinhoconteudo.com/" class="btn-header">🔙 Voltar ao Portal</a>
+      <a href="versus.html" class="btn-header">⚔️ Ir para o Confronto de Clãs</a>
+    </div>
+
     <select id="turmaSelect">
       <option value="A">🛡️ Turma A</option>
       <option value="B">⚔️ Turma B</option>
     </select>
-    <br />
-    <a href="versus.html" class="btn-versus">⚔️ Ir para o Confronto de Clãs</a>
   </header>
 
   <section id="ranking">
@@ -223,29 +182,28 @@
   <section style="text-align: center; margin-top: 40px;">
     <h2>📝 Envie sua Ficha de Aventureiro</h2>
     <p>Clique no botão abaixo para acessar o formulário:</p>
-    <a href="https://forms.gle/xrf6kKD8tdfa4Tbd6" target="_blank" class="btn-versus">📬 Abrir Formulário</a>
+    <a href="https://forms.gle/xrf6kKD8tdfa4Tbd6" target="_blank" class="btn-header">📬 Abrir Formulário</a>
   </section>
-  
+
   <script src="public/dadosXP.js"></script>
   <script>
     const dados = dadosXP;
-  
+
     const turmaSelect = document.getElementById("turmaSelect");
     const alunoList = document.getElementById("alunoList");
     const top3List = document.getElementById("top3List");
-    const fichaSecao = document.getElementById("ficha");
     const fichaDetalhes = document.getElementById("fichaDetalhes");
-  
+
     function renderizarTurma(turma) {
       const alunos = [...dados[turma]].sort((a, b) => b.pontos - a.pontos);
-  
+
       top3List.innerHTML = "";
       alunos.slice(0, 3).forEach(aluno => {
         const li = document.createElement("li");
         li.textContent = `${aluno.nome} - ${aluno.pontos} XP`;
         top3List.appendChild(li);
       });
-  
+
       alunoList.innerHTML = "";
       alunos.forEach((aluno, index) => {
         const li = document.createElement("li");
@@ -254,11 +212,11 @@
         alunoList.appendChild(li);
       });
     }
-  
+
     function mostrarFicha(aluno) {
       const xpProximoNivel = (aluno.nivel + 1) * 30;
       const percentualXP = Math.min((aluno.pontos / xpProximoNivel) * 100, 100);
-  
+
       fichaDetalhes.innerHTML = `
         <img src="${aluno.avatar}" alt="Avatar de ${aluno.nome}" class="ficha-avatar"/>
         <div class="barra-xp">
@@ -274,18 +232,17 @@
       `;
       document.getElementById("fichaModal").classList.remove("hidden");
     }
-  
-    // 👉 Aqui está o que faltava
+
     window.fecharFicha = function() {
       document.getElementById("fichaModal").classList.add("hidden");
     };
-  
+
     turmaSelect.addEventListener("change", () => {
       renderizarTurma(turmaSelect.value);
     });
-  
+
     renderizarTurma("A");
   </script>
-  
+
 </body>
 </html>
